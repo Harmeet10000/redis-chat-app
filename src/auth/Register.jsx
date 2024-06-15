@@ -1,10 +1,32 @@
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Grid, TextField, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const [formError, setFormError] = useState(null);
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data) => {
+    axios
+      .post("http://127.0.0.1:5000/user/register", data)
+      .then((res) => navigate("/app"))
+      .catch((err) => setFormError(err.response.data));
+  };
 
+   const token = localStorage.getItem("token");
+   useEffect(() => {
+     if (token) {
+       navigate("/app");
+     }
+   }, [token]);
 
   return (
     <Container
@@ -21,8 +43,6 @@ const Login = () => {
               height: "100%",
               display: "flex",
               alignItems: "center",
-
-              //  boder:(theme)=>console.log(theme)
             }}
           >
             <Box sx={{ p: 5, textAlign: "center" }}>
@@ -92,14 +112,29 @@ const Login = () => {
               flexDirection: "column",
             }}
           >
-            <Box sx={{ p: 5 }}>
-              <Typography variant="h4" sx={{mb: 2, fontWeight:"500"}}>Register</Typography>
+            <Box
+              sx={{ p: 5 }}
+              component="form"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              {formError && 
+              <Alert sx={{mb: 3}} severity="error">{formError.msg}</Alert>
+              }
+              <Typography variant="h4" sx={{ mb: 2, fontWeight: "500" }}>
+                Register
+              </Typography>
               <TextField
                 fullWidth
                 id="name"
                 label="Name"
                 variant="outlined"
                 sx={{ mb: 3 }}
+                {...register("name", {
+                  required: true,
+                  message: "Name is required",
+                })}
+                error={!!errors.name}
+                helperText={errors.name && errors.name.message}
               />
               <TextField
                 sx={{ mb: 3 }}
@@ -107,6 +142,18 @@ const Login = () => {
                 id="email"
                 label="Email"
                 variant="outlined"
+                {...register("email", {
+                  required: {
+                    value: true,
+                    message: "email is required",
+                  },
+                  pattern: {
+                    value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                    message: "Invalid email",
+                  },
+                })}
+                error={!!errors.name}
+                helperText={errors.name && errors.name.message}
               />
               <TextField
                 fullWidth
@@ -114,6 +161,12 @@ const Login = () => {
                 label="Password"
                 variant="outlined"
                 sx={{ mb: 3 }}
+                {...register("password", {
+                  required: true,
+                  message: "password is required",
+                })}
+                error={!!errors.name}
+                helperText={errors.name && errors.name.message}
               />
               <TextField
                 fullWidth
@@ -121,11 +174,21 @@ const Login = () => {
                 label="Mobile"
                 variant="outlined"
                 sx={{ mb: 3 }}
+                {...register("mobile", {
+                  required: true,
+                  message: "mobile is required",
+                })}
+                error={!!errors.name}
+                helperText={errors.name && errors.name.message}
               />
-              <Button fullWidth sx={{ py: 2 }} variant="contained">
-                Login
+              <Button
+                type="submit"
+                fullWidth
+                sx={{ py: 2 }}
+                variant="contained"
+              >
+                Signup
               </Button>
-            
             </Box>
             <Box sx={{ p: 1, textAlign: "center" }}>-</Box>
 
@@ -133,7 +196,7 @@ const Login = () => {
               <Typography variant="body2">
                 {" "}
                 Have an account?
-                <Button onClick={() => navigate("/")} > Login </Button>
+                <Button onClick={() => navigate("/")}> Login </Button>
               </Typography>
             </Box>
           </Paper>

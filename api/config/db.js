@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const PATH = "mongodb://localhost:27017";
+const PATH =
+  "mongodb+srv://harmeet:harmeet@cluster0.ih5cssz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 const connectDB = async () => {
     try {
