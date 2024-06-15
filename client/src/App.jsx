@@ -1,27 +1,15 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from "./auth/Login";
-import Register from "./auth/Register";
-import Chat from "./chat/Chat";
+import { Route } from "react-router-dom";
 import { useEffect } from "react";
 
 const App = () => {
-  const token = localStorage.getItem("token");
-  useEffect(() => {
-    if (token) {
-      navigate("/app");
-    }
-  }, [token]);
+ 
 
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/app" element={<Chat />} />
-      </Routes>
-    </BrowserRouter>
-    
-  );
+ return (
+   <div className="App">
+     <Route path="/" component={Homepage} exact />
+     <Route path="/chats" component={Chatpage} />
+   </div>
+ );
 };
 
 export default App;
