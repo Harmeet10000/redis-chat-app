@@ -1,5 +1,8 @@
 import { Route } from "react-router-dom";
-import { useEffect } from "react";
+import Homepage from "./Pages/Homepage";
+import Chatpage from "./Pages/Chatpage";
+import './App.css';
+
 
 const App = () => {
  
