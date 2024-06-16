@@ -6,8 +6,8 @@ const protect = asyncHandler(async (req, res, next) => {
   let token;
 
   if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
+    req.headers.authorization &&                              // Check if the header exists
+    req.headers.authorization.startsWith("Bearer")           // Check if the header starts with "Bearer"
   ) {
     try {
       token = req.headers.authorization.split(" ")[1];
