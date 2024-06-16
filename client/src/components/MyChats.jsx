@@ -26,6 +26,12 @@ const MyChats = ({ fetchAgain }) => {
       };
 
       const { data } = await axios.get("/api/chat", config);
+  //     if (Array.isArray(data)) {                                              // ChatGPT
+  //   setChats(data);
+  // } else {
+  //   setChats([]); // or handle error case
+  // }
+ 
       setChats(data);
     } catch (error) {
       toast({
@@ -87,7 +93,7 @@ const MyChats = ({ fetchAgain }) => {
         borderRadius="lg"
         overflowY="hidden"
       >
-        {chats ? (
+        {Array.isArray(chats) && chats.length > 0 ? (
           <Stack overflowY="scroll">
             {chats.map((chat) => (
               <Box
